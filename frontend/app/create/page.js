@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { jwtDecode } from "jwt-decode";
-
 export default function CreatePost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -15,8 +14,13 @@ export default function CreatePost() {
   const [loading, setLoading] = useState(true);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const postId = searchParams.get("id");
+  const [postId, setPostId] = useState(null);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("id");
+    setPostId(postId);
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
